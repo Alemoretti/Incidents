@@ -1,19 +1,22 @@
-
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Header from './Header'
+import IncidentsList from './IncidentsList'
 
 class App extends Component {
-    render () {
+  render () {
     return (
-        <BrowserRouter>
+      <BrowserRouter>
         <div>asd
-            <Header />
+          <Header />
+          <Switch>
+            <Route exact path='/' component={IncidentsList} />
+          </Switch>
         </div>
-        </BrowserRouter>
+      </BrowserRouter>
     )
-    }
+  }
 }
 
 ReactDOM.render(<App />, document.getElementById('app'))
