@@ -8,7 +8,7 @@ class App extends Component {
   render () {
     return (
       <BrowserRouter>
-        <div>asd
+        <div>
           <Header />
           <Switch>
             <Route exact path='/' component={IncidentsList} />
