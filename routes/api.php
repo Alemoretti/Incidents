@@ -2,9 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\IncidentController;
 
-Route::get('incidents', 'IncidentController@index');
-Route::get('incident/{id}', 'IncidentController@show');
-Route::post('incident/{incident}', 'IncidentController@createIncident');
-Route::patch('incident/{incident}', 'IncidentController@udpateIncident');
-Route::delete('incident/new/{incident}', 'IncidentController@deleteIncident');
+Route::get('incidents',  [IncidentController::class, 'index']);
+Route::get('incident/{id}', [IncidentController::class, 'show']);
+Route::post('incident/create', [IncidentController::class, 'createIncident']);
+Route::patch('incident/{incident}', [IncidentController::class, 'updateIncident']);
+Route::delete('incident/new/{incident}', [IncidentController::class, 'deleteIncident']);
