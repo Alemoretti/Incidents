@@ -19,32 +19,36 @@ class IncidentController extends Controller
     public function createIncident(Request $request)
     {
       $validatedData = $request->validate([
-        'name' => 'required',
+        'title' => 'required',
         'description' => 'required',
+        'criticality' => 'required',
+        'type' => 'required',
+        'status' => 'required',
       ]);
 
       $incident = Incident::create([
-        'name' => $validatedData['name'],
+        'title' => $validatedData['title'],
         'description' => $validatedData['description'],
+        'criticality_id' => $validatedData['criticality'],
+        'status_id' => $validatedData['status'],
+        'type_id' => $validatedData['type'],
       ]);
 
-      return response()->json('Incident created!');
+      return response()->json('Incidente criado!');
     }
 
     public function show($id)
     {
-      $incident = Incident::with(['tasks' => function ($query) {
-        $query->where('is_completed', false);
-      }])->find($id);
+      $incident = Incident::find($id);
 
       return $incident->toJson();
     }
 
-    public function markAsCompleted(Project $project)
+    public function updateIncident(Project $project)
     {
-      $project->is_completed = true;
+      $project->title = '';
       $project->update();
 
-      return response()->json('Project updated!');
+      return response()->json('Incidente atualizado!');
     }
 }
