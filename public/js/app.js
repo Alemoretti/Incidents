@@ -2195,10 +2195,7 @@ var IncidentsList = /*#__PURE__*/function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      console.log('Entered');
       axios__WEBPACK_IMPORTED_MODULE_0___default().get('/api/incidents').then(function (response) {
-        console.log(response);
-
         _this2.setState({
           incidents: response.data
         });
@@ -2318,8 +2315,11 @@ var NewIncident = /*#__PURE__*/function (_Component) {
 
     _this = _super.call(this, props);
     _this.state = {
-      name: '',
+      title: '',
       description: '',
+      type: '',
+      status: '',
+      criticality: '',
       errors: []
     };
     _this.handleFieldChange = _this.handleFieldChange.bind(_assertThisInitialized(_this));
@@ -2342,10 +2342,13 @@ var NewIncident = /*#__PURE__*/function (_Component) {
       event.preventDefault();
       var history = this.props.history;
       var incident = {
-        name: this.state.name,
-        description: this.state.description
+        title: this.state.title,
+        description: this.state.description,
+        criticality: this.state.criticality,
+        status: this.state.status,
+        type: this.state.type
       };
-      axios__WEBPACK_IMPORTED_MODULE_0___default().post('/api/incident', incident).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post('/api/incident/create', incident).then(function (response) {
         // redirect to the homepage
         history.push('/');
       })["catch"](function (error) {
@@ -2392,16 +2395,16 @@ var NewIncident = /*#__PURE__*/function (_Component) {
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
                     className: "form-group",
                     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
-                      htmlFor: "name",
+                      htmlFor: "title",
                       children: "T\xEDtulo"
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
-                      id: "name",
+                      id: "title",
                       type: "text",
-                      className: "form-control ".concat(this.hasErrorFor('name') ? 'is-invalid' : ''),
-                      name: "name",
-                      value: this.state.name,
+                      className: "form-control ".concat(this.hasErrorFor('title') ? 'is-invalid' : ''),
+                      name: "title",
+                      value: this.state.title,
                       onChange: this.handleFieldChange
-                    }), this.renderErrorFor('name')]
+                    }), this.renderErrorFor('title')]
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
                     className: "form-group",
                     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
@@ -2415,6 +2418,45 @@ var NewIncident = /*#__PURE__*/function (_Component) {
                       value: this.state.description,
                       onChange: this.handleFieldChange
                     }), this.renderErrorFor('description')]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                    className: "form-group",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+                      htmlFor: "criticality",
+                      children: "Criticidade"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+                      id: "criticality",
+                      type: "text",
+                      className: "form-control ".concat(this.hasErrorFor('criticality') ? 'is-invalid' : ''),
+                      name: "criticality",
+                      value: this.state.criticality,
+                      onChange: this.handleFieldChange
+                    }), this.renderErrorFor('criticality')]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                    className: "form-group",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+                      htmlFor: "type",
+                      children: "T\xEDtulo"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+                      id: "type",
+                      type: "text",
+                      className: "form-control ".concat(this.hasErrorFor('type') ? 'is-invalid' : ''),
+                      name: "type",
+                      value: this.state.type,
+                      onChange: this.handleFieldChange
+                    }), this.renderErrorFor('type')]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                    className: "form-group",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+                      htmlFor: "status",
+                      children: "T\xEDtulo"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+                      id: "status",
+                      type: "text",
+                      className: "form-control ".concat(this.hasErrorFor('status') ? 'is-invalid' : ''),
+                      name: "status",
+                      value: this.state.status,
+                      onChange: this.handleFieldChange
+                    }), this.renderErrorFor('status')]
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
                     className: "btn btn-primary",
                     children: "Create"
@@ -2489,10 +2531,9 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
 
     _this = _super.call(this, props);
     _this.state = {
-      incident: {},
-      tasks: []
+      incident: {}
     };
-    _this.handleMarkProjectAsCompleted = _this.handleMarkProjectAsCompleted.bind(_assertThisInitialized(_this));
+    _this.handleUpdate = _this.handleUpdate.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -2502,27 +2543,24 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
       var _this2 = this;
 
       var incidentId = this.props.match.params.id;
-      axios__WEBPACK_IMPORTED_MODULE_0___default().get("/api/incidents/".concat(incidentId)).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get("/api/incident/".concat(incidentId)).then(function (response) {
         _this2.setState({
-          incident: response.data,
-          tasks: response.data.tasks
+          incident: response.data
         });
       });
     }
   }, {
-    key: "handleMarkProjectAsCompleted",
-    value: function handleMarkProjectAsCompleted() {
+    key: "handleUpdate",
+    value: function handleUpdate() {
       var history = this.props.history;
-      axios__WEBPACK_IMPORTED_MODULE_0___default().put("/api/projects/".concat(this.state.project.id)).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default().patch("/api/incident/".concat(this.state.incident.id)).then(function (response) {
         return history.push('/');
       });
     }
   }, {
     key: "render",
     value: function render() {
-      var _this$state = this.state,
-          incident = _this$state.incident,
-          tasks = _this$state.tasks;
+      var incident = this.state.incident;
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
         className: "container py-4",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
@@ -2533,26 +2571,33 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
               className: "card",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
                 className: "card-header",
-                children: incident.name
+                children: incident.title
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
                 className: "card-body",
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
                   children: incident.description
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
                   className: "btn btn-primary btn-sm",
-                  onClick: this.handleMarkProjectAsCompleted,
-                  children: "Mark as completed"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("hr", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("ul", {
+                  onClick: this.handleUpdate,
+                  children: "Atualizar"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("hr", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("ul", {
                   className: "list-group mt-3",
-                  children: tasks.map(function (task) {
-                    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("li", {
-                      className: "list-group-item d-flex justify-content-between align-items-center",
-                      children: [task.title, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-                        className: "btn btn-primary btn-sm",
-                        children: "Mark as completed"
-                      })]
-                    }, task.id);
-                  })
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("li", {
+                    className: "list-group-item d-flex justify-content-between align-items-center",
+                    children: incident.title
+                  }, incident.id), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("li", {
+                    className: "list-group-item d-flex justify-content-between align-items-center",
+                    children: incident.description
+                  }, incident.id), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("li", {
+                    className: "list-group-item d-flex justify-content-between align-items-center",
+                    children: incident.criticality_id
+                  }, incident.id), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("li", {
+                    className: "list-group-item d-flex justify-content-between align-items-center",
+                    children: incident.type
+                  }, incident.id), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("li", {
+                    className: "list-group-item d-flex justify-content-between align-items-center",
+                    children: incident.status
+                  }, incident.id)]
                 })]
               })]
             })
