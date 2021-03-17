@@ -21,11 +21,11 @@ class IncidentsList extends Component {
   render () {
     const { incidents } = this.state
     return (
-      <div className='container py-4'>
+      <div className='container py-12'>
         <div className='row justify-content-center'>
-          <div className='col-md-8'>
+          <div className='col-md-12'>
             <div className='card'>
-              <div className='card-header'>Todos incidentes</div>
+              <div className='card-header'>Lista de incidentes</div>
               <div className='card-body'>
                 <Link className='btn btn-primary btn-sm mb-3' to='/create'>
                   Novo incidente
@@ -37,13 +37,11 @@ class IncidentsList extends Component {
                       to={`/${incident.id}`}
                       key={incident.id}
                     >
-                      <h1>{incident.title}</h1>
-                      <p>{incident.description}</p>
-                      <p>{incident.criticality_id}</p>
-                      <p>{incident.type_id}</p>
-                      <p>{incident.status_id}</p>
-                      <p>{incident.description}</p>
-                    </Link>
+                      <p>
+                        Título: {incident.title}<br />
+                        Descrição: {incident.description}
+                      </p>
+                    </Link>        
                   ))}
                 </ul>
               </div>
