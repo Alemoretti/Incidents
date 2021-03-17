@@ -40,7 +40,9 @@ class IncidentController extends Controller
     public function show($id)
     {
       $incident = Incident::find($id);
-
+      $incident->statusName = $incident->status;
+      $incident->typeName = $incident->type;
+      $incident->criticality = $incident->criticalityLevel;
       return $incident->toJson();
     }
 
