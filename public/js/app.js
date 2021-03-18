@@ -2541,7 +2541,7 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
     _this.handleUpdate = _this.handleUpdate.bind(_assertThisInitialized(_this));
     _this.handleFieldChange = _this.handleFieldChange.bind(_assertThisInitialized(_this));
     _this.handleStatusChange = _this.handleStatusChange.bind(_assertThisInitialized(_this));
-    _this.setEditMode = _this.setEditMode.bind(_assertThisInitialized(_this));
+    _this.changeEditMode = _this.changeEditMode.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -2569,8 +2569,9 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
       });
     }
   }, {
-    key: "setEditMode",
-    value: function setEditMode(event) {
+    key: "changeEditMode",
+    value: function changeEditMode(event) {
+      event.preventDefault();
       this.setState({
         editMode: !this.state.editMode
       });
@@ -2599,11 +2600,14 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
                 children: ["Incidente: ", this.state.title]
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
                 className: "card-body",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-                  className: "btn btn-primary btn-sm",
-                  onClick: this.setEditMode,
-                  children: "Editar"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("hr", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("form", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                  className: this.state.editMode ? "d-none" : "",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                    className: "btn btn-primary btn-sm",
+                    onClick: this.changeEditMode,
+                    children: "Editar"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("hr", {})]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("form", {
                   onSubmit: this.handleUpdateIncident,
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
                     htmlFor: "title",
@@ -2685,6 +2689,17 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
                       id: "status_id",
                       checked: this.state.status_id == 1 ? true : false,
                       disabled: this.state.editMode ? false : true
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                    className: this.state.editMode ? "" : "d-none",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("hr", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                      className: "btn btn-danger btn-sm pull-right cancel-edit-mode",
+                      onClick: this.changeEditMode,
+                      children: "Cancelar"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                      className: "btn btn-success btn-sm pull-right ",
+                      onClick: this.handleUpdate,
+                      children: "Salvar"
                     })]
                   })]
                 })]

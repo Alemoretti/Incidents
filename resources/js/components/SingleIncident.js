@@ -18,7 +18,7 @@ class SingleIncident extends Component {
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleFieldChange = this.handleFieldChange.bind(this);
         this.handleStatusChange = this.handleStatusChange.bind(this);
-        this.setEditMode = this.setEditMode.bind(this);
+        this.changeEditMode = this.changeEditMode.bind(this);
     }
 
     componentDidMount() {
@@ -43,7 +43,8 @@ class SingleIncident extends Component {
         this.setState({ status_id: statusValue });
     }
 
-    setEditMode(event) {
+    changeEditMode(event) {
+        event.preventDefault();
         this.setState({editMode: !this.state.editMode});
     }
 
@@ -62,14 +63,16 @@ class SingleIncident extends Component {
                         <div className='card'>
                             <div className='card-header'>Incidente: {this.state.title}</div>
                             <div className='card-body'>
-                                <button
-                                    className='btn btn-primary btn-sm'
-                                    onClick={this.setEditMode}
-                                >
-                                    Editar
-                                </button>
+                                <div className={(this.state.editMode ? "d-none" : "")} >
+                                    <button
+                                        className='btn btn-primary btn-sm'
+                                        onClick={this.changeEditMode}
+                                    >
+                                        Editar
+                                    </button>
 
-                                <hr />
+                                    <hr />
+                                </div>
                                 <form onSubmit={this.handleUpdateIncident}>
 
                                     <label htmlFor="title">Título</label><br />
@@ -132,6 +135,22 @@ class SingleIncident extends Component {
                                             checked={this.state.status_id == 1 ? true : false} 
                                             disabled={(this.state.editMode) ? false : true} 
                                         />
+                                    </div>
+                                    
+                                    <div className={(this.state.editMode ? "" : "d-none")}>
+                                        <hr />
+                                        <button
+                                            className={"btn btn-danger btn-sm pull-right cancel-edit-mode"}
+                                            onClick={this.changeEditMode}
+                                        >
+                                            Cancelar
+                                        </button>                                         
+                                        <button
+                                            className={"btn btn-success btn-sm pull-right "}
+                                            onClick={this.handleUpdate}
+                                        >
+                                            Salvar
+                                        </button>                                 
                                     </div>
                                 </form>
                             </div>
