@@ -9,9 +9,7 @@ class IncidentController extends Controller
 {
     public function index()
     {
-      $incidents = Incident::where('status_id', 1)
-                          ->orderBy('created_at', 'desc')
-                          ->get();
+      $incidents = Incident::orderBy('created_at', 'desc')->get();
 
       return $incidents->toJson();
     }
@@ -21,17 +19,17 @@ class IncidentController extends Controller
       $validatedData = $request->validate([
         'title' => 'required',
         'description' => 'required',
-        'criticality' => 'required',
-        'type' => 'required',
-        'status' => 'required',
+        'criticality_id' => 'required',
+        'type_id' => 'required',
+        'status_id' => 'required',
       ]);
 
       $incident = Incident::create([
         'title' => $validatedData['title'],
         'description' => $validatedData['description'],
-        'criticality_id' => $validatedData['criticality'],
-        'status_id' => $validatedData['status'],
-        'type_id' => $validatedData['type'],
+        'criticality_id' => $validatedData['criticality_id'],
+        'status_id' => $validatedData['status_id'],
+        'type_id' => $validatedData['type_id'],
       ]);
 
       return response()->json('Incidente criado!');
@@ -46,11 +44,23 @@ class IncidentController extends Controller
       return $incident->toJson();
     }
 
-    public function updateIncident(Project $project)
+    public function updateIncident(Incident $incident, Request $request)
     {
-      $project->title = '';
-      $project->update();
+      $incident->title = $request->input('title');
+      $incident->description = $request->input('description');
+      $incident->criticality_id = $request->input('criticality_id');
+      $incident->status_id = $request->input('status_id');
+      $incident->type_id = $request->input('type_id');
+      $incident->update();
 
       return response()->json('Incidente atualizado!');
     }
+
+    public function deleteIncident(Incident $incident, Request $request)
+    {
+      $incident->find($request->route('id'))->delete();
+      $incident->delete();
+
+      return response()->json('Incidente excluído!');
+    }    
 }

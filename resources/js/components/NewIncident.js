@@ -1,5 +1,7 @@
 import axios from 'axios'
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import Switch from "react-switch"
 
 class NewIncident extends Component {
   constructor (props) {
@@ -7,21 +9,24 @@ class NewIncident extends Component {
     this.state = {
       title: '',
       description: '',
-      type: '',
-      status: '',
-      criticality: '',
-      errors: []
+      type_id: '',
+      status_id: 2,
+      criticality_id: ''
     }
     this.handleFieldChange = this.handleFieldChange.bind(this)
     this.handleCreateNewIncident = this.handleCreateNewIncident.bind(this)
-    this.hasErrorFor = this.hasErrorFor.bind(this)
-    this.renderErrorFor = this.renderErrorFor.bind(this)
+    this.handleStatusChange = this.handleStatusChange.bind(this);
   }
 
   handleFieldChange (event) {
     this.setState({
       [event.target.name]: event.target.value
     })
+  }
+  
+  handleStatusChange(checked) {
+    let statusValue = checked ? 1: 2;
+    this.setState({ status_id: statusValue });
   }
 
   handleCreateNewIncident (event) {
@@ -32,9 +37,9 @@ class NewIncident extends Component {
     const incident = {
       title: this.state.title,
       description: this.state.description,
-      criticality: this.state.criticality,
-      status: this.state.status,
-      type: this.state.type
+      criticality_id: this.state.criticality_id,
+      status_id: this.state.status_id,
+      type_id: this.state.type_id
     }
 
     axios.post('/api/incident/create', incident)
@@ -43,25 +48,10 @@ class NewIncident extends Component {
         history.push('/')
       })
       .catch(error => {
-        this.setState({
-          errors: error.response.data.errors
-        })
+          console.log(errors);
       })
   }
 
-  hasErrorFor (field) {
-    return !!this.state.errors[field]
-  }
-
-  renderErrorFor (field) {
-    if (this.hasErrorFor(field)) {
-      return (
-        <span className='invalid-feedback'>
-          <strong>{this.state.errors[field][0]}</strong>
-        </span>
-      )
-    }
-  }
 
   render () {
     return (
@@ -77,62 +67,62 @@ class NewIncident extends Component {
                     <input
                       id='title'
                       type='text'
-                      className={`form-control ${this.hasErrorFor('title') ? 'is-invalid' : ''}`}
+                      className={`form-control`}
                       name='title'
                       value={this.state.title}
                       onChange={this.handleFieldChange}
                     />
-                    {this.renderErrorFor('title')}
                   </div>
                   <div className='form-group'>
                     <label htmlFor='description'>Descrição</label>
                     <textarea
                       id='description'
-                      className={`form-control ${this.hasErrorFor('description') ? 'is-invalid' : ''}`}
+                      className={`form-control`}
                       name='description'
                       rows='10'
                       value={this.state.description}
                       onChange={this.handleFieldChange}
                     />
-                    {this.renderErrorFor('description')}
                   </div>
-                  <div className='form-group'>
-                    <label htmlFor='criticality'>Criticidade</label>
-                    <input
-                      id='criticality'
-                      type='text'
-                      className={`form-control ${this.hasErrorFor('criticality') ? 'is-invalid' : ''}`}
-                      name='criticality'
-                      value={this.state.criticality}
-                      onChange={this.handleFieldChange}
-                    />
-                    {this.renderErrorFor('criticality')}
-                  </div>
-                  <div className='form-group'>
-                    <label htmlFor='type'>Título</label>
-                    <input
-                      id='type'
-                      type='text'
-                      className={`form-control ${this.hasErrorFor('type') ? 'is-invalid' : ''}`}
-                      name='type'
-                      value={this.state.type}
-                      onChange={this.handleFieldChange}
-                    />
-                    {this.renderErrorFor('type')}
-                  </div>
-                  <div className='form-group'>
-                    <label htmlFor='status'>Título</label>
-                    <input
-                      id='status'
-                      type='text'
-                      className={`form-control ${this.hasErrorFor('status') ? 'is-invalid' : ''}`}
-                      name='status'
-                      value={this.state.status}
-                      onChange={this.handleFieldChange}
-                    />
-                    {this.renderErrorFor('status')}
-                  </div>                                                      
-                  <button className='btn btn-primary'>Create</button>
+                  <label htmlFor="criticality_id">Criticidade</label><br />
+                    <select name="criticality_id"
+                        value={this.state.criticality_id} 
+                        id="criticality_id"
+                        onChange={this.handleFieldChange} 
+                    >
+                        <option value="0">Selecione</option>
+                        <option value="1">Baixa</option>
+                        <option value="2">Média</option>
+                        <option value="3">Alta</option>
+                    </select>
+                
+                    <div>
+                        <label htmlFor="type_id">Tipo</label><br />
+                        <select name="type_id" 
+                            value={this.state.type_id} 
+                            onChange={this.handleFieldChange}
+                            id="type_id"
+                        >
+                            <option value="0">Selecione</option>
+                            <option value="1">Alarme</option>
+                            <option value="2">Incidente</option>
+                            <option value="3">Outros</option>
+                        </select>
+                    </div>
+                
+                    <div>
+                        <label htmlFor="status">Status</label><br />
+                        <Switch name="status_id" 
+                            onChange={this.handleStatusChange} 
+                            id="status_id"
+                            checked={this.state.status_id == 1 ? true : false} 
+                        />
+                    </div>  
+                    <hr />                                         
+                    <Link className='btn btn-secondary' to='/'>
+                        Voltar
+                    </Link>                              
+                  <button className='btn btn-success'>Criar</button>
                 </form>
               </div>
             </div>

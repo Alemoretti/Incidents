@@ -2222,17 +2222,22 @@ var IncidentsList = /*#__PURE__*/function (_Component) {
                   className: "btn btn-primary btn-sm mb-3",
                   to: "/create",
                   children: "Novo incidente"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("ul", {
-                  className: "list-group list-group-flush",
-                  children: incidents.map(function (incident) {
-                    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
+                  children: " Selecione o incidente:"
+                }), incidents.map(function (incident) {
+                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
                       className: "list-group-item list-group-item-action d-flex justify-content-between align-items-center",
                       to: "/".concat(incident.id),
                       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("p", {
-                        children: ["T\xEDtulo: ", incident.title, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("br", {}), "Descri\xE7\xE3o: ", incident.description]
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("b", {
+                          children: "T\xEDtulo"
+                        }), ": ", incident.title, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("b", {
+                          children: "Descri\xE7\xE3o"
+                        }), ": ", incident.description]
                       })
-                    }, incident.id);
-                  })
+                    })
+                  }, incident.id);
                 })]
               })]
             })
@@ -2263,7 +2268,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var react_switch__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-switch */ "./node_modules/react-switch/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -2293,6 +2300,8 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
+
 var NewIncident = /*#__PURE__*/function (_Component) {
   _inherits(NewIncident, _Component);
 
@@ -2307,15 +2316,13 @@ var NewIncident = /*#__PURE__*/function (_Component) {
     _this.state = {
       title: '',
       description: '',
-      type: '',
-      status: '',
-      criticality: '',
-      errors: []
+      type_id: '',
+      status_id: 2,
+      criticality_id: ''
     };
     _this.handleFieldChange = _this.handleFieldChange.bind(_assertThisInitialized(_this));
     _this.handleCreateNewIncident = _this.handleCreateNewIncident.bind(_assertThisInitialized(_this));
-    _this.hasErrorFor = _this.hasErrorFor.bind(_assertThisInitialized(_this));
-    _this.renderErrorFor = _this.renderErrorFor.bind(_assertThisInitialized(_this));
+    _this.handleStatusChange = _this.handleStatusChange.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -2325,131 +2332,137 @@ var NewIncident = /*#__PURE__*/function (_Component) {
       this.setState(_defineProperty({}, event.target.name, event.target.value));
     }
   }, {
+    key: "handleStatusChange",
+    value: function handleStatusChange(checked) {
+      var statusValue = checked ? 1 : 2;
+      this.setState({
+        status_id: statusValue
+      });
+    }
+  }, {
     key: "handleCreateNewIncident",
     value: function handleCreateNewIncident(event) {
-      var _this2 = this;
-
       event.preventDefault();
       var history = this.props.history;
       var incident = {
         title: this.state.title,
         description: this.state.description,
-        criticality: this.state.criticality,
-        status: this.state.status,
-        type: this.state.type
+        criticality_id: this.state.criticality_id,
+        status_id: this.state.status_id,
+        type_id: this.state.type_id
       };
       axios__WEBPACK_IMPORTED_MODULE_0___default().post('/api/incident/create', incident).then(function (response) {
         // redirect to the homepage
         history.push('/');
       })["catch"](function (error) {
-        _this2.setState({
-          errors: error.response.data.errors
-        });
+        console.log(errors);
       });
-    }
-  }, {
-    key: "hasErrorFor",
-    value: function hasErrorFor(field) {
-      return !!this.state.errors[field];
-    }
-  }, {
-    key: "renderErrorFor",
-    value: function renderErrorFor(field) {
-      if (this.hasErrorFor(field)) {
-        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
-          className: "invalid-feedback",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("strong", {
-            children: this.state.errors[field][0]
-          })
-        });
-      }
     }
   }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
         className: "container py-4",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
           className: "row justify-content-center",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
             className: "col-md-6",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
               className: "card",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
                 className: "card-header",
                 children: "Create new incident"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
                 className: "card-body",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("form", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("form", {
                   onSubmit: this.handleCreateNewIncident,
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
                     className: "form-group",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
                       htmlFor: "title",
                       children: "T\xEDtulo"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
                       id: "title",
                       type: "text",
-                      className: "form-control ".concat(this.hasErrorFor('title') ? 'is-invalid' : ''),
+                      className: "form-control",
                       name: "title",
                       value: this.state.title,
                       onChange: this.handleFieldChange
-                    }), this.renderErrorFor('title')]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
                     className: "form-group",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
                       htmlFor: "description",
                       children: "Descri\xE7\xE3o"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("textarea", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("textarea", {
                       id: "description",
-                      className: "form-control ".concat(this.hasErrorFor('description') ? 'is-invalid' : ''),
+                      className: "form-control",
                       name: "description",
                       rows: "10",
                       value: this.state.description,
                       onChange: this.handleFieldChange
-                    }), this.renderErrorFor('description')]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-                    className: "form-group",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
-                      htmlFor: "criticality",
-                      children: "Criticidade"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
-                      id: "criticality",
-                      type: "text",
-                      className: "form-control ".concat(this.hasErrorFor('criticality') ? 'is-invalid' : ''),
-                      name: "criticality",
-                      value: this.state.criticality,
-                      onChange: this.handleFieldChange
-                    }), this.renderErrorFor('criticality')]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-                    className: "form-group",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
-                      htmlFor: "type",
-                      children: "T\xEDtulo"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
-                      id: "type",
-                      type: "text",
-                      className: "form-control ".concat(this.hasErrorFor('type') ? 'is-invalid' : ''),
-                      name: "type",
-                      value: this.state.type,
-                      onChange: this.handleFieldChange
-                    }), this.renderErrorFor('type')]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-                    className: "form-group",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+                    htmlFor: "criticality_id",
+                    children: "Criticidade"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+                    name: "criticality_id",
+                    value: this.state.criticality_id,
+                    id: "criticality_id",
+                    onChange: this.handleFieldChange,
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                      value: "0",
+                      children: "Selecione"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                      value: "1",
+                      children: "Baixa"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                      value: "2",
+                      children: "M\xE9dia"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                      value: "3",
+                      children: "Alta"
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+                      htmlFor: "type_id",
+                      children: "Tipo"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+                      name: "type_id",
+                      value: this.state.type_id,
+                      onChange: this.handleFieldChange,
+                      id: "type_id",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                        value: "0",
+                        children: "Selecione"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                        value: "1",
+                        children: "Alarme"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                        value: "2",
+                        children: "Incidente"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                        value: "3",
+                        children: "Outros"
+                      })]
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
                       htmlFor: "status",
-                      children: "T\xEDtulo"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
-                      id: "status",
-                      type: "text",
-                      className: "form-control ".concat(this.hasErrorFor('status') ? 'is-invalid' : ''),
-                      name: "status",
-                      value: this.state.status,
-                      onChange: this.handleFieldChange
-                    }), this.renderErrorFor('status')]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-                    className: "btn btn-primary",
-                    children: "Create"
+                      children: "Status"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_switch__WEBPACK_IMPORTED_MODULE_2__.default, {
+                      name: "status_id",
+                      onChange: this.handleStatusChange,
+                      id: "status_id",
+                      checked: this.state.status_id == 1 ? true : false
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("hr", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Link, {
+                    className: "btn btn-secondary",
+                    to: "/",
+                    children: "Voltar"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                    className: "btn btn-success",
+                    children: "Criar"
                   })]
                 })
               })]
@@ -2482,6 +2495,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react_switch__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-switch */ "./node_modules/react-switch/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -2530,6 +2544,7 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
 
     _this = _super.call(this, props);
     _this.state = {
+      id: _this.props.match.params.id,
       title: '',
       description: '',
       status_id: false,
@@ -2541,6 +2556,8 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
     _this.handleUpdate = _this.handleUpdate.bind(_assertThisInitialized(_this));
     _this.handleFieldChange = _this.handleFieldChange.bind(_assertThisInitialized(_this));
     _this.handleStatusChange = _this.handleStatusChange.bind(_assertThisInitialized(_this));
+    _this.changeEditMode = _this.changeEditMode.bind(_assertThisInitialized(_this));
+    _this.handleDelete = _this.handleDelete.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -2555,6 +2572,18 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
       });
     }
   }, {
+    key: "handleDelete",
+    value: function handleDelete() {
+      if (confirm("Deseja realmente excluir o incidente?")) {
+        var history = this.props.history;
+        axios__WEBPACK_IMPORTED_MODULE_0___default().delete("/api/incident/delete/".concat(this.state.id)).then(function (response) {
+          history.push('/');
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      }
+    }
+  }, {
     key: "handleFieldChange",
     value: function handleFieldChange(event) {
       this.setState(_defineProperty({}, event.target.name, event.target.value));
@@ -2562,24 +2591,28 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
   }, {
     key: "handleStatusChange",
     value: function handleStatusChange(checked) {
-      var statusValue = checked ? 1 : 0;
+      var statusValue = checked ? 1 : 2;
       this.setState({
         status_id: statusValue
       });
     }
   }, {
-    key: "setEditMode",
-    value: function setEditMode(event) {
+    key: "changeEditMode",
+    value: function changeEditMode(event) {
+      event.preventDefault();
       this.setState({
         editMode: !this.state.editMode
       });
     }
   }, {
     key: "handleUpdate",
-    value: function handleUpdate() {
+    value: function handleUpdate(event) {
+      event.preventDefault();
       var history = this.props.history;
-      axios__WEBPACK_IMPORTED_MODULE_0___default().patch("/api/incident/".concat(this.state.incident.id)).then(function (response) {
-        return history.push('/');
+      axios__WEBPACK_IMPORTED_MODULE_0___default().patch("/api/incident/".concat(this.state.id), this.state).then(function (response) {
+        history.push('/');
+      })["catch"](function (error) {
+        console.log(error);
       });
     }
   }, {
@@ -2598,11 +2631,22 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
                 children: ["Incidente: ", this.state.title]
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
                 className: "card-body",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-                  className: "btn btn-primary btn-sm",
-                  onClick: this.setEditMode,
-                  children: "Editar"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("hr", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("form", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                  className: this.state.editMode ? "d-none" : "",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Link, {
+                    className: "btn btn-secondary",
+                    to: "/",
+                    children: "Voltar"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                    className: "btn btn-primary",
+                    onClick: this.changeEditMode,
+                    children: "Editar"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                    className: "btn btn-danger float-right",
+                    onClick: this.handleDelete,
+                    children: "Excluir"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("hr", {})]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("form", {
                   onSubmit: this.handleUpdateIncident,
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
                     htmlFor: "title",
@@ -2615,7 +2659,7 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
                     placeholder: "T\xEDtulo do incidente",
                     value: this.state.title,
                     onChange: this.handleFieldChange,
-                    disabled: this.state.editMode ? "disabled" : ""
+                    disabled: this.state.editMode ? false : true
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
                     htmlFor: "description",
                     children: "Descri\xE7\xE3o"
@@ -2627,7 +2671,7 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
                     placeholder: "Descri\xE7\xE3o do incidente",
                     value: this.state.description,
                     onChange: this.handleFieldChange,
-                    disabled: this.state.editMode ? "disabled" : ""
+                    disabled: this.state.editMode ? false : true
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
                     htmlFor: "criticality_id",
                     children: "Criticidade"
@@ -2636,8 +2680,7 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
                     value: this.state.criticality_id,
                     id: "criticality_id",
                     onChange: this.handleFieldChange,
-                    disadisabled: this.state.editMode ? "disabled" : "",
-                    bled: true,
+                    disabled: this.state.editMode ? false : true,
                     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
                       value: "0",
                       children: "Selecione"
@@ -2660,7 +2703,7 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
                       value: this.state.type_id,
                       onChange: this.handleFieldChange,
                       id: "type_id",
-                      disabled: this.state.editMode ? "disabled" : "",
+                      disabled: this.state.editMode ? false : true,
                       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
                         value: "0",
                         children: "Selecione"
@@ -2684,7 +2727,18 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
                       onChange: this.handleStatusChange,
                       id: "status_id",
                       checked: this.state.status_id == 1 ? true : false,
-                      disabled: this.state.editMode ? "disabled" : ""
+                      disabled: this.state.editMode ? false : true
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                    className: this.state.editMode ? "" : "d-none",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("hr", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                      className: "btn btn-secondary pull-right cancel-edit-mode",
+                      onClick: this.changeEditMode,
+                      children: "Cancelar"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                      className: "btn btn-success pull-right ",
+                      onClick: this.handleUpdate,
+                      children: "Salvar"
                     })]
                   })]
                 })]

@@ -30,20 +30,21 @@ class IncidentsList extends Component {
                 <Link className='btn btn-primary btn-sm mb-3' to='/create'>
                   Novo incidente
                 </Link>
-                <ul className='list-group list-group-flush'>
+                <p> Selecione o incidente:</p>
                   {incidents.map(incident => (
-                    <Link
-                      className='list-group-item list-group-item-action d-flex justify-content-between align-items-center'
-                      to={`/${incident.id}`}
-                      key={incident.id}
-                    >
-                      <p>
-                        Título: {incident.title}<br />
-                        Descrição: {incident.description}
-                      </p>
-                    </Link>        
+                    <div key={incident.id}>
+                      <Link
+                        className='list-group-item list-group-item-action d-flex justify-content-between align-items-center'
+                        to={`/${incident.id}`}
+                      >
+                        <p>
+                          <b>Título</b>: {incident.title}<br />
+                          <b>Descrição</b>: {incident.description}
+                        </p>
+                      </Link>        
+                    </div>
                   ))}
-                </ul>
+                
               </div>
             </div>
           </div>
