@@ -122,17 +122,16 @@ class SingleIncident extends Component {
                                     />
 
                                     <label htmlFor="description">Descrição</label>
-                                    <input
-                                        type='text'
-                                        name='description'
-                                        className={'form-control'}
-                                        id="description"
-                                        placeholder='Descrição do incidente'
-                                        value={this.state.description}
-                                        onChange={this.handleFieldChange}
-                                        disabled={(this.state.editMode) ? false : true}
-                                    />
-                                    
+                                    <textarea
+                                    id='description'
+                                    className={`form-control`}
+                                    name='description'
+                                    rows='4'
+                                    placeholder='Descrição do incidente'
+                                    value={this.state.description}
+                                    onChange={this.handleFieldChange}
+                                    disabled={(this.state.editMode) ? false : true}
+                                    />                                    
                                     <label htmlFor="criticality_id">Criticidade</label><br />
                                     <select name="criticality_id"
                                         value={this.state.criticality_id} 

@@ -8451,7 +8451,7 @@ var NewIncident = /*#__PURE__*/function (_Component) {
                       id: "description",
                       className: "form-control",
                       name: "description",
-                      rows: "10",
+                      rows: "4",
                       value: this.state.description,
                       onChange: this.handleFieldChange
                     })]
@@ -8726,11 +8726,11 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
                     htmlFor: "description",
                     children: "Descri\xE7\xE3o"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-                    type: "text",
-                    name: "description",
-                    className: 'form-control',
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("textarea", {
                     id: "description",
+                    className: "form-control",
+                    name: "description",
+                    rows: "4",
                     placeholder: "Descri\xE7\xE3o do incidente",
                     value: this.state.description,
                     onChange: this.handleFieldChange,

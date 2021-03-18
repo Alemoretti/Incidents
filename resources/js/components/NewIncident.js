@@ -79,7 +79,7 @@ class NewIncident extends Component {
                       id='description'
                       className={`form-control`}
                       name='description'
-                      rows='10'
+                      rows='4'
                       value={this.state.description}
                       onChange={this.handleFieldChange}
                     />
