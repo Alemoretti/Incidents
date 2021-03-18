@@ -12,10 +12,12 @@ class SingleIncident extends Component {
             status_id: false,
             type_id: 0,
             criticality_id: 0,
-            editMode: false
+            editMode: false,
+            checked: false
         }
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleFieldChange = this.handleFieldChange.bind(this);
+        this.handleStatusChange = this.handleStatusChange.bind(this);
     }
 
     componentDidMount() {
@@ -35,6 +37,11 @@ class SingleIncident extends Component {
         });
     }
     
+    handleStatusChange(checked) {
+        let statusValue = checked ? 1: 0;
+        this.setState({ status_id: statusValue });
+    }
+
     setEditMode(event) {
         this.setState({editMode: !this.state.editMode});
     }
@@ -117,7 +124,7 @@ class SingleIncident extends Component {
                                     <div>
                                     <label htmlFor="status">Status</label><br />
                                     <Switch name="status_id" 
-                                        onChange={this.handleFieldChange} 
+                                        onChange={this.handleStatusChange} 
                                         id="status_id"
                                         checked={this.state.status_id == 1 ? true : false} 
                                         disabled={(this.state.editMode) ? "disabled" : ""} 
