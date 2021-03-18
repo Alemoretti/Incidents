@@ -2,6 +2,9 @@ import axios from 'axios'
 import React, { Component } from 'react'
 import Switch from "react-switch"
 import { Link } from 'react-router-dom'
+import Button from '@material-ui/core/Button';
+import DeleteIcon from '@material-ui/icons/Delete';
+import SaveIcon from '@material-ui/icons/Save';
 
 class SingleIncident extends Component {
     constructor(props) {
@@ -84,15 +87,24 @@ class SingleIncident extends Component {
                             <div className='card-body'>
                                 <div className={(this.state.editMode ? "d-none" : "")} >
                                     <Link className='btn btn-secondary' to='/'>
-                                        Voltar
+                                        VOLTAR
                                     </Link>                                    
-                                    <button
-                                        className='btn btn-primary'
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
                                         onClick={this.changeEditMode}
                                     >
                                         Editar
-                                    </button>
-                                    <button className="btn btn-danger float-right" onClick={this.handleDelete}>Excluir</button>
+                                    </Button>                                     
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        className={'float-right'}
+                                        startIcon={<DeleteIcon />}
+                                        onClick={this.handleDelete}
+                                    >
+                                        Excluir
+                                    </Button>                                    
                                     <hr />
                                 </div>
                                 <form onSubmit={this.handleUpdateIncident}>
@@ -161,18 +173,24 @@ class SingleIncident extends Component {
                                     
                                     <div className={(this.state.editMode ? "" : "d-none")}>
                                         <hr />
-                                        <button
-                                            className={"btn btn-secondary pull-right cancel-edit-mode"}
+                                        <Button
+                                            variant="contained"
+                                            color="secondary"
+                                            className={'float-right cancel-edit-mode'}
                                             onClick={this.changeEditMode}
                                         >
                                             Cancelar
-                                        </button>                                         
-                                        <button
-                                            className={"btn btn-success pull-right "}
+                                        </Button>                                                                                  
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            size="large"
+                                            className={'pull-right'}
+                                            startIcon={<SaveIcon />}
                                             onClick={this.handleUpdate}
                                         >
                                             Salvar
-                                        </button>                                 
+                                        </Button>                                                                      
                                     </div>
                                 </form>
                             </div>
