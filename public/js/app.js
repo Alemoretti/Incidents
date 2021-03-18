@@ -2541,6 +2541,7 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
     _this.handleUpdate = _this.handleUpdate.bind(_assertThisInitialized(_this));
     _this.handleFieldChange = _this.handleFieldChange.bind(_assertThisInitialized(_this));
     _this.handleStatusChange = _this.handleStatusChange.bind(_assertThisInitialized(_this));
+    _this.setEditMode = _this.setEditMode.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -2615,7 +2616,7 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
                     placeholder: "T\xEDtulo do incidente",
                     value: this.state.title,
                     onChange: this.handleFieldChange,
-                    disabled: this.state.editMode ? "disabled" : ""
+                    disabled: this.state.editMode ? false : true
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
                     htmlFor: "description",
                     children: "Descri\xE7\xE3o"
@@ -2627,7 +2628,7 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
                     placeholder: "Descri\xE7\xE3o do incidente",
                     value: this.state.description,
                     onChange: this.handleFieldChange,
-                    disabled: this.state.editMode ? "disabled" : ""
+                    disabled: this.state.editMode ? false : true
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
                     htmlFor: "criticality_id",
                     children: "Criticidade"
@@ -2636,8 +2637,7 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
                     value: this.state.criticality_id,
                     id: "criticality_id",
                     onChange: this.handleFieldChange,
-                    disadisabled: this.state.editMode ? "disabled" : "",
-                    bled: true,
+                    disabled: this.state.editMode ? false : true,
                     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
                       value: "0",
                       children: "Selecione"
@@ -2660,7 +2660,7 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
                       value: this.state.type_id,
                       onChange: this.handleFieldChange,
                       id: "type_id",
-                      disabled: this.state.editMode ? "disabled" : "",
+                      disabled: this.state.editMode ? false : true,
                       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
                         value: "0",
                         children: "Selecione"
@@ -2684,7 +2684,7 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
                       onChange: this.handleStatusChange,
                       id: "status_id",
                       checked: this.state.status_id == 1 ? true : false,
-                      disabled: this.state.editMode ? "disabled" : ""
+                      disabled: this.state.editMode ? false : true
                     })]
                   })]
                 })]
