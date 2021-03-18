@@ -12,6 +12,7 @@ class SingleIncident extends Component {
             status_id: false,
             type_id: 0,
             criticality_id: 0,
+            editMode: false
         }
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleFieldChange = this.handleFieldChange.bind(this);
@@ -29,11 +30,13 @@ class SingleIncident extends Component {
     }
 
     handleFieldChange(event) {
-        console.log([event.target.name]);
-        console.log(event.target.value );
         this.setState({ 
             [event.target.name] : event.target.value 
         });
+    }
+    
+    setEditMode(event) {
+        this.setState({editMode: !this.state.editMode});
     }
 
     handleUpdate() {
@@ -53,7 +56,7 @@ class SingleIncident extends Component {
                             <div className='card-body'>
                                 <button
                                     className='btn btn-primary btn-sm'
-                                    onClick={this.handleUpdate}
+                                    onClick={this.setEditMode}
                                 >
                                     Editar
                                 </button>
@@ -61,30 +64,36 @@ class SingleIncident extends Component {
                                 <hr />
                                 <form onSubmit={this.handleUpdateIncident}>
 
-                                    <label for="title">Título</label><br />
+                                    <label htmlFor="title">Título</label><br />
                                     <input
                                         type='text'
                                         name='title'
                                         className={'form-control'}
+                                        id="title"
                                         placeholder='Título do incidente'
                                         value={this.state.title}
                                         onChange={this.handleFieldChange}
-                                        
+                                        disabled={(this.state.editMode) ? "disabled" : ""}
                                     />
 
-                                    <label for="description">Descrição</label>
+                                    <label htmlFor="description">Descrição</label>
                                     <input
                                         type='text'
                                         name='description'
                                         className={'form-control'}
+                                        id="description"
                                         placeholder='Descrição do incidente'
                                         value={this.state.description}
                                         onChange={this.handleFieldChange}
-                                        
+                                        disabled={(this.state.editMode) ? "disabled" : ""}
                                     />
                                     
-                                    <label for="criticality_id">Criticidade</label><br />
-                                    <select name="criticality_id" value={this.state.criticality_id} onChange={this.handleFieldChange}>
+                                    <label htmlFor="criticality_id">Criticidade</label><br />
+                                    <select name="criticality_id"
+                                        value={this.state.criticality_id} 
+                                        id="criticality_id"
+                                        onChange={this.handleFieldChange} 
+                                        disadisabled={(this.state.editMode) ? "disabled" : ""}bled>
                                         <option value="0">Selecione</option>
                                         <option value="1">Baixa</option>
                                         <option value="2">Média</option>
@@ -92,8 +101,12 @@ class SingleIncident extends Component {
                                     </select>
                                 
                                     <div>
-                                    <label for="type">Tipo</label><br />
-                                    <select name="type_id" value={this.state.type_id} onChange={this.handleFieldChange}>
+                                    <label htmlFor="type_id">Tipo</label><br />
+                                    <select name="type_id" 
+                                        value={this.state.type_id} 
+                                        onChange={this.handleFieldChange}
+                                        id="type_id"
+                                        disabled={(this.state.editMode) ? "disabled" : ""}>
                                         <option value="0">Selecione</option>
                                         <option value="1">Alarme</option>
                                         <option value="2">Incidente</option>
@@ -102,8 +115,13 @@ class SingleIncident extends Component {
                                     </div>
                                 
                                     <div>
-                                    <label for="status">Status</label><br />
-                                    <Switch name="status_id" onChange={this.handleFieldChange} checked={this.state.status_id == 1 ? true : false} />
+                                    <label htmlFor="status">Status</label><br />
+                                    <Switch name="status_id" 
+                                        onChange={this.handleFieldChange} 
+                                        id="status_id"
+                                        checked={this.state.status_id == 1 ? true : false} 
+                                        disabled={(this.state.editMode) ? "disabled" : ""} 
+                                    />
                                     </div>
                                 </form>
                             </div>
