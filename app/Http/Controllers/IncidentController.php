@@ -19,17 +19,17 @@ class IncidentController extends Controller
       $validatedData = $request->validate([
         'title' => 'required',
         'description' => 'required',
-        'criticality' => 'required',
-        'type' => 'required',
-        'status' => 'required',
+        'criticality_id' => 'required',
+        'type_id' => 'required',
+        'status_id' => 'required',
       ]);
 
       $incident = Incident::create([
         'title' => $validatedData['title'],
         'description' => $validatedData['description'],
-        'criticality_id' => $validatedData['criticality'],
-        'status_id' => $validatedData['status'],
-        'type_id' => $validatedData['type'],
+        'criticality_id' => $validatedData['criticality_id'],
+        'status_id' => $validatedData['status_id'],
+        'type_id' => $validatedData['type_id'],
       ]);
 
       return response()->json('Incidente criado!');

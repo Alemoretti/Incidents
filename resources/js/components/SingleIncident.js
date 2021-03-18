@@ -79,7 +79,7 @@ class SingleIncident extends Component {
                                     >
                                         Editar
                                     </button>
-
+                                    <button className="btn btn-danger float-right">Excluir</button>
                                     <hr />
                                 </div>
                                 <form onSubmit={this.handleUpdateIncident}>
