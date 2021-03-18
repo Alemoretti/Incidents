@@ -2236,8 +2236,8 @@ var IncidentsList = /*#__PURE__*/function (_Component) {
                           children: "Descri\xE7\xE3o"
                         }), ": ", incident.description]
                       })
-                    }, incident.id)
-                  });
+                    })
+                  }, incident.id);
                 })]
               })]
             })
@@ -2557,6 +2557,7 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
     _this.handleFieldChange = _this.handleFieldChange.bind(_assertThisInitialized(_this));
     _this.handleStatusChange = _this.handleStatusChange.bind(_assertThisInitialized(_this));
     _this.changeEditMode = _this.changeEditMode.bind(_assertThisInitialized(_this));
+    _this.handleDelete = _this.handleDelete.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -2569,6 +2570,18 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
       axios__WEBPACK_IMPORTED_MODULE_0___default().get("/api/incident/".concat(incidentId)).then(function (response) {
         _this2.setState(_objectSpread({}, response.data));
       });
+    }
+  }, {
+    key: "handleDelete",
+    value: function handleDelete() {
+      if (confirm("Deseja realmente excluir o incidente?")) {
+        var history = this.props.history;
+        axios__WEBPACK_IMPORTED_MODULE_0___default().delete("/api/incident/delete/".concat(this.state.id)).then(function (response) {
+          history.push('/');
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      }
     }
   }, {
     key: "handleFieldChange",
@@ -2630,6 +2643,7 @@ var SingleIncident = /*#__PURE__*/function (_Component) {
                     children: "Editar"
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
                     className: "btn btn-danger float-right",
+                    onClick: this.handleDelete,
                     children: "Excluir"
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("hr", {})]
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("form", {

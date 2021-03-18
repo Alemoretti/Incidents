@@ -20,6 +20,7 @@ class SingleIncident extends Component {
         this.handleFieldChange = this.handleFieldChange.bind(this);
         this.handleStatusChange = this.handleStatusChange.bind(this);
         this.changeEditMode = this.changeEditMode.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     componentDidMount() {
@@ -33,12 +34,24 @@ class SingleIncident extends Component {
 
     }
 
+    handleDelete() {
+        if (confirm("Deseja realmente excluir o incidente?")) {
+            const { history } = this.props
+            axios.delete(`/api/incident/delete/${this.state.id}`)
+                .then(response => {
+                    history.push('/')
+                }).catch((error) => {
+                    console.log(error);
+                });
+        }
+    }
+    
     handleFieldChange(event) {
         this.setState({ 
             [event.target.name] : event.target.value 
         });
     }
-    
+
     handleStatusChange(checked) {
         let statusValue = checked ? 1: 2;
         this.setState({ status_id: statusValue });
@@ -79,7 +92,7 @@ class SingleIncident extends Component {
                                     >
                                         Editar
                                     </button>
-                                    <button className="btn btn-danger float-right">Excluir</button>
+                                    <button className="btn btn-danger float-right" onClick={this.handleDelete}>Excluir</button>
                                     <hr />
                                 </div>
                                 <form onSubmit={this.handleUpdateIncident}>

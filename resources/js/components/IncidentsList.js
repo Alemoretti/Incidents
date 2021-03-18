@@ -32,17 +32,16 @@ class IncidentsList extends Component {
                 </Link>
                 <p> Selecione o incidente:</p>
                   {incidents.map(incident => (
-                    <div>
-                    <Link
-                      className='list-group-item list-group-item-action d-flex justify-content-between align-items-center'
-                      to={`/${incident.id}`}
-                      key={incident.id}
-                    >
-                      <p>
-                        <b>Título</b>: {incident.title}<br />
-                        <b>Descrição</b>: {incident.description}
-                      </p>
-                    </Link>        
+                    <div key={incident.id}>
+                      <Link
+                        className='list-group-item list-group-item-action d-flex justify-content-between align-items-center'
+                        to={`/${incident.id}`}
+                      >
+                        <p>
+                          <b>Título</b>: {incident.title}<br />
+                          <b>Descrição</b>: {incident.description}
+                        </p>
+                      </Link>        
                     </div>
                   ))}
                 

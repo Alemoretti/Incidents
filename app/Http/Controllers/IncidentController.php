@@ -55,4 +55,12 @@ class IncidentController extends Controller
 
       return response()->json('Incidente atualizado!');
     }
+
+    public function deleteIncident(Incident $incident, Request $request)
+    {
+      $incident->find($request->route('id'))->delete();
+      $incident->delete();
+
+      return response()->json('Incidente excluído!');
+    }    
 }
