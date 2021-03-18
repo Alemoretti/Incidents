@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
 class NewIncident extends Component {
   constructor (props) {
@@ -131,8 +132,11 @@ class NewIncident extends Component {
                       onChange={this.handleFieldChange}
                     />
                     {this.renderErrorFor('status')}
-                  </div>                                                      
-                  <button className='btn btn-primary'>Create</button>
+                  </div>                                            
+                  <Link className='btn btn-secondary' to='/'>
+                      Voltar
+                  </Link>                              
+                  <button className='btn btn-success'>Criar</button>
                 </form>
               </div>
             </div>

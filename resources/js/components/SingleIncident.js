@@ -1,12 +1,13 @@
 import axios from 'axios'
 import React, { Component } from 'react'
-import Switch from "react-switch";
-import Select from 'react-select';
+import Switch from "react-switch"
+import { Link } from 'react-router-dom'
 
 class SingleIncident extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            id: this.props.match.params.id,
             title: '',
             description: '',
             status_id: false,
@@ -39,7 +40,7 @@ class SingleIncident extends Component {
     }
     
     handleStatusChange(checked) {
-        let statusValue = checked ? 1: 0;
+        let statusValue = checked ? 1: 2;
         this.setState({ status_id: statusValue });
     }
 
@@ -48,11 +49,16 @@ class SingleIncident extends Component {
         this.setState({editMode: !this.state.editMode});
     }
 
-    handleUpdate() {
+    handleUpdate(event) {
+        event.preventDefault();
         const { history } = this.props
 
-        axios.patch(`/api/incident/${this.state.incident.id}`)
-            .then(response => history.push('/'))
+        axios.patch(`/api/incident/${this.state.id}`, this.state)
+            .then(response => {
+                history.push('/')
+            }).catch((error) => {
+                console.log(error);
+            });
     }
 
     render() {
@@ -64,8 +70,11 @@ class SingleIncident extends Component {
                             <div className='card-header'>Incidente: {this.state.title}</div>
                             <div className='card-body'>
                                 <div className={(this.state.editMode ? "d-none" : "")} >
+                                    <Link className='btn btn-secondary' to='/'>
+                                        Voltar
+                                    </Link>                                    
                                     <button
-                                        className='btn btn-primary btn-sm'
+                                        className='btn btn-primary'
                                         onClick={this.changeEditMode}
                                     >
                                         Editar
@@ -140,13 +149,13 @@ class SingleIncident extends Component {
                                     <div className={(this.state.editMode ? "" : "d-none")}>
                                         <hr />
                                         <button
-                                            className={"btn btn-danger btn-sm pull-right cancel-edit-mode"}
+                                            className={"btn btn-secondary pull-right cancel-edit-mode"}
                                             onClick={this.changeEditMode}
                                         >
                                             Cancelar
                                         </button>                                         
                                         <button
-                                            className={"btn btn-success btn-sm pull-right "}
+                                            className={"btn btn-success pull-right "}
                                             onClick={this.handleUpdate}
                                         >
                                             Salvar

@@ -9,9 +9,7 @@ class IncidentController extends Controller
 {
     public function index()
     {
-      $incidents = Incident::where('status_id', 1)
-                          ->orderBy('created_at', 'desc')
-                          ->get();
+      $incidents = Incident::orderBy('created_at', 'desc')->get();
 
       return $incidents->toJson();
     }
@@ -46,10 +44,14 @@ class IncidentController extends Controller
       return $incident->toJson();
     }
 
-    public function updateIncident(Project $project)
+    public function updateIncident(Incident $incident, Request $request)
     {
-      $project->title = '';
-      $project->update();
+      $incident->title = $request->input('title');
+      $incident->description = $request->input('description');
+      $incident->criticality_id = $request->input('criticality_id');
+      $incident->status_id = $request->input('status_id');
+      $incident->type_id = $request->input('type_id');
+      $incident->update();
 
       return response()->json('Incidente atualizado!');
     }
