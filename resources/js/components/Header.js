@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const Header = () => (
   <nav className='navbar navbar-expand-md navbar-light navbar-laravel'>
     <div className='container'>
-      <Link className='navbar-brand' to='/'>Incidents</Link>
+      <Link className='navbar-brand' to='/'>Controle de Incidentes</Link>
     </div>
   </nav>
 )

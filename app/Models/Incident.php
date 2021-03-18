@@ -11,16 +11,16 @@ class Incident extends Model
     
     public function status()
     {
-        return $this->hasOne(Status::class);
+        return $this->belongsTo(Status::class);
     }
 
     public function type()
     {
-        return $this->hasOne(Type::class);
+        return $this->belongsTo(Type::class);
     }
     
     public function criticalityLevel()
     {
-        return $this->hasOne(CriticalityLevel::class);
+        return $this->belongsTo(CriticalityLevel::class);
     }    
 }
