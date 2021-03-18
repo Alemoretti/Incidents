@@ -1,19 +1,22 @@
 import axios from 'axios'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import Loading from './Loading'
 
 class IncidentsList extends Component {
   constructor () {
     super()
     this.state = {
-      incidents: []
+      incidents: [],
+      isVisible: true
     }
   }
 
   componentDidMount () {
     axios.get('/api/incidents').then(response => {
       this.setState({
-        incidents: response.data
+        incidents: response.data,
+        isVisible: false
       })
     })
   }
@@ -31,6 +34,7 @@ class IncidentsList extends Component {
                   Novo incidente
                 </Link>
                 <p> Selecione o incidente:</p>
+                <Loading isVisible={this.state.isVisible}/>
                   {incidents.map(incident => (
                     <div key={incident.id}>
                       <Link
